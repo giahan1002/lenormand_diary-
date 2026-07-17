@@ -6,7 +6,7 @@ from datetime import datetime
 # Cấu hình trang cơ bản
 st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
 
-# Đã sửa thành dấu gạch dưới (_) chuẩn chỉnh ở đây:
+# Đổi màu nền sang màu kem sữa pastel nhẹ nhàng
 st.markdown("<style>.stApp {background-color: #FFFDF0;}</style>", unsafe_allow_html=True)
 
 DB_FILE = "nhat_ky_lenormand.csv"
@@ -34,10 +34,11 @@ if "df" not in st.session_state:
 # ==================== BANNER CHIILAWA & USAGI ====================
 col_title, col_img = st.columns([3, 1])
 with col_title:
-    st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
-    st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!")
+    st.title("🐰 YAHA! Nhật Ký Trải Bài")
+    st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày... Urara!!")
 with col_img:
-    st.image("https://i.pinimg.com/736x/8d/bf/9a/8dbf9a46452baec02cf065ee0962b80f.jpg", width=120)
+    # Đã cập nhật sang ảnh mới của bạn gửi ở đây nha
+    st.image("https://static.wikia.nocookie.net/chiikawa/images/b/b5/Site-background-light/revision/latest/scale-to-width-down/1500?cb=20250326162037", width=150)
 
 st.write("---")
 
@@ -83,10 +84,10 @@ with tab1:
                 st.session_state.df = pd.concat([st.session_state.df, new_row], ignore_index=True)
                 st.session_state.df.to_csv(DB_FILE, index=False)
                 
-                # Thông báo thành công trước khi dọn dẹp form
+                # Thông báo thành công
                 st.toast("🎉 Đã lưu xong rồi! Ura-ra-ra-ra! 🐰⭐")
                 
-                # Cách xóa sạch ô nhập liệu an toàn
+                # Xóa sạch ô nhập liệu
                 for k in ["form_cards", "form_event"]:
                     if k in st.session_state:
                         del st.session_state[k]
@@ -118,16 +119,19 @@ with tab3:
     current_df = st.session_state.df
     
     if not current_df.empty:
+        # Vòng lặp hiển thị từng trải bài
         for index, row in current_df.iterrows():
-            with st.container():
+            # Thêm box (border=True) bao quanh mỗi trải bài để dễ phân biệt
+            with st.container(border=True):
                 col_info, col_edit, col_del = st.columns([5, 2, 1])
                 
                 with col_info:
-                    st.write(f"📅 **Ngày:** {row['Ngay']} | 🔮 **Bài:** `{row['Danh_Sach_La_Bai']}`")
-                    st.write(f"📝 **Giải nghĩa thực tế:** {row['Su_Kien_Thuc_Te']}")
+                    st.markdown(f"📅 **Ngày:** `{row['Ngay']}`")
+                    st.markdown(f"🔮 **Bài đã rút:** `{row['Danh_Sach_La_Bai']}`")
+                    st.markdown(f"📝 **Giải nghĩa thực tế:** {row['Su_Kien_Thuc_Te']}")
                 
                 with col_edit:
-                    new_meaning = st.text_input("Sửa giải nghĩa:", value=row['Su_Kien_Thuc_Te'], key=f"edit_{index}")
+                    new_meaning = st.text_input("Sửa nhanh giải nghĩa:", value=row['Su_Kien_Thuc_Te'], key=f"edit_{index}")
                     if new_meaning != row['Su_Kien_Thuc_Te']:
                         if st.button("📝 Cập nhật", key=f"btn_edit_{index}"):
                             st.session_state.df.at[index, "Su_Kien_Thuc_Te"] = new_meaning
@@ -136,7 +140,7 @@ with tab3:
                             st.rerun()
                             
                 with col_del:
-                    st.write("") 
+                    st.write("") # Đẩy nút xóa xuống một chút cho thẳng hàng
                     if st.button("🗑️ Xóa", key=f"btn_del_{index}"):
                         st.session_state.df = st.session_state.df.drop(index).reset_index(drop=True)
                         st.session_state.df.to_csv(DB_FILE, index=False)
