@@ -120,7 +120,7 @@ with tab2:
                 
                 # 1. Tạo một DataFrame mới tinh giản chỉ lấy 2 cột bạn cần và đổi tên cột cho đẹp
                 display_df = filtered_df[["Su_Kien_Thuc_Te", "Danh_Sach_La_Bai"]].copy()
-                display_df.columns = ["🎯 Sự Kiện Thực Tế", "🔮 Các Lá Trong Trải Bài"]
+                display_df.columns = ["Sự Kiện", "Trải Bài"]
                 
                 # 2. Hiển thị bảng dạng Minimalist, tự động giãn tràn màn hình và bo góc đẹp mắt
                 st.data_editor(
