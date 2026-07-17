@@ -118,7 +118,7 @@ with tab2:
             if not filtered_df.empty:
                 st.write(f"### 💡 Khi lá **{search_card}** xuất hiện, thực tế bạn đã gặp:")
                 for _, row in filtered_df.iterrows():
-                    st.write(f"💖 {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
+                    st.write(f"*{row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
                 # ---- THÊM DÒNG DÍ DỎM NÀY VÀO ĐÂY NHA HÂN ----
                 st.write("") # Tạo một khoảng trống nhỏ cho đẹp
                 st.success("🐰 **Ura... Nhìn bạn ngon như cà phê Laura của ca sĩ Nhật Kim Anh vậy!** ☕✨")
