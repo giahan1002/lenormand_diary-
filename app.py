@@ -6,6 +6,9 @@ from datetime import datetime
 # Cấu hình trang cơ bản
 st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
 
+# Mẹo đổi màu nền đơn giản, an toàn
+st.markdown("<style>.stApp {background-color: #FFFDF0;}</style>", unsafe-allow_html=True)
+
 DB_FILE = "nhat_ky_lenormand.csv"
 
 LENORMAND_CARDS = [
@@ -24,22 +27,16 @@ def load_data():
     else:
         return pd.DataFrame(columns=["Ngay", "Danh_Sach_La_Bai", "Su_Kien_Thuc_Te"])
 
+# Tải dữ liệu vào session_state
 if "df" not in st.session_state:
     st.session_state.df = load_data()
-
-if "form_cards" not in st.session_state:
-    st.session_state.form_cards = []
-if "form_event" not in st.session_state:
-    st.session_state.form_event = ""
 
 # ==================== BANNER CHIILAWA & USAGI ====================
 col_title, col_img = st.columns([3, 1])
 with col_title:
-    st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
+    st.title("🐰 YAHA! Nhật Ký Trải Bài")
     st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!")
-with col_img:
-    st.image("https://static.wikia.nocookie.net/chiikawa/images/b/b5/Site-background-light/revision/latest/scale-to-width-down/1500?cb=20250326162037", width=120)
-
+    
 st.write("---")
 
 tab1, tab2, tab3 = st.tabs(["⭐ Ghi Chép Hôm Nay", "🔍 Tra Cứu Sự Kiện", "🧺 Quản Lý Lịch Sử"])
@@ -62,7 +59,7 @@ with tab1:
     with col2:
         actual_event = st.text_area(
             "Sự kiện thực tế diễn ra (Validation):", 
-            placeholder="Ví dụ: Ngồi cạnh một người phụ nữ sắc sảo ở trường...",
+            placeholder="Ví dụ: Ngồi cạnh một người phụ nữ sắc sảo ở trường học...",
             height=150,
             key="form_event"
         )
@@ -80,13 +77,18 @@ with tab1:
                     "Su_Kien_Thuc_Te": actual_event.strip()
                 }])
                 
+                # Lưu dữ liệu vào file
                 st.session_state.df = pd.concat([st.session_state.df, new_row], ignore_index=True)
                 st.session_state.df.to_csv(DB_FILE, index=False)
                 
-                st.success("🎉 Xuất sắc!! Đã lưu xong rồi! Ura-ra-ra-ra! 🐰⭐")
+                # Thông báo thành công trước khi dọn dẹp form
+                st.toast("🎉 Đã lưu xong rồi! Ura-ra-ra-ra! 🐰⭐")
                 
-                st.session_state.form_cards = []
-                st.session_state.form_event = ""
+                # Cách xóa sạch ô nhập liệu an toàn, không gây lỗi dòng 88
+                for k in ["form_cards", "form_event"]:
+                    if k in st.session_state:
+                        del st.session_state[k]
+                        
                 st.rerun()
 
 # ==================== TAB 2: TRA CỨU SỰ KIỆN THỰC TẾ ====================
@@ -128,7 +130,7 @@ with tab3:
                         if st.button("📝 Cập nhật", key=f"btn_edit_{index}"):
                             st.session_state.df.at[index, "Su_Kien_Thuc_Te"] = new_meaning
                             st.session_state.df.to_csv(DB_FILE, index=False)
-                            st.success("Đã sửa thành công!")
+                            st.toast("Đã sửa thành công!")
                             st.rerun()
                             
                 with col_del:
@@ -136,7 +138,7 @@ with tab3:
                     if st.button("🗑️ Xóa", key=f"btn_del_{index}"):
                         st.session_state.df = st.session_state.df.drop(index).reset_index(drop=True)
                         st.session_state.df.to_csv(DB_FILE, index=False)
-                        st.success("Đã xóa sạch!")
+                        st.toast("Đã xóa sạch!")
                         st.rerun()
     else:
         st.info("Kho trống rỗng~ Hãy đi rút bài thôi nào! 🃏")
