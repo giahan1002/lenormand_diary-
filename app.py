@@ -3,11 +3,8 @@ import pandas as pd
 import os
 from datetime import datetime
 
-# 1. Cấu hình trang với giao diện bo tròn và icon thỏ Usagi
+# Cấu hình trang cơ bản
 st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
-
-# 2. Đổi màu nền trang web sang màu kem pastel nhẹ nhàng của Usagi
-st.markdown("<style>.stApp {background-color: #FFFDF0;}</style>", unsafe-allow_html=True)
 
 DB_FILE = "nhat_ky_lenormand.csv"
 
@@ -39,17 +36,17 @@ if "form_event" not in st.session_state:
 col_title, col_img = st.columns([3, 1])
 with col_title:
     st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
-    st.markdown("*Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!*")
+    st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!")
 with col_img:
     st.image("https://i.pinimg.com/736x/8d/bf/9a/8dbf9a46452baec02cf065ee0962b80f.jpg", width=120)
 
-st.markdown("---")
+st.write("---")
 
 tab1, tab2, tab3 = st.tabs(["⭐ Ghi Chép Hôm Nay", "🔍 Tra Cứu Sự Kiện", "🧺 Quản Lý Lịch Sử"])
 
 # ==================== TAB 1: NHẬP LIỆU HÀNG NGÀY ====================
 with tab1:
-    st.subheader("📝 Hôm nay bộ bài nói gì với bạn thế?")
+    st.write("### 📝 Hôm nay bộ bài nói gì với bạn thế?")
     col1, col2 = st.columns([1, 2])
     
     with col1:
@@ -86,7 +83,7 @@ with tab1:
                 st.session_state.df = pd.concat([st.session_state.df, new_row], ignore_index=True)
                 st.session_state.df.to_csv(DB_FILE, index=False)
                 
-                st.success(f"🎉 Xuất sắc!! Đã lưu xong rồi! Ura-ra-ra-ra! 🐰⭐")
+                st.success("🎉 Xuất sắc!! Đã lưu xong rồi! Ura-ra-ra-ra! 🐰⭐")
                 
                 st.session_state.form_cards = []
                 st.session_state.form_event = ""
@@ -94,7 +91,7 @@ with tab1:
 
 # ==================== TAB 2: TRA CỨU SỰ KIỆN THỰC TẾ ====================
 with tab2:
-    st.subheader("🔎 Tìm kiếm ký ức của những lá bài")
+    st.write("### 🔎 Tìm kiếm ký ức của những lá bài")
     search_card = st.selectbox("Chọn lá bài muốn tra cứu ngược:", options=["-- Chọn lá bài --"] + LENORMAND_CARDS)
     
     if search_card != "-- Chọn lá bài --":
@@ -103,10 +100,9 @@ with tab2:
             filtered_df = current_df[current_df["Danh_Sach_La_Bai"].apply(lambda x: search_card in [c.strip() for c in str(x).split(",")])]
             
             if not filtered_df.empty:
-                st.markdown(f"### 💡 Khi lá **{search_card}** xuất hiện, thực tế bạn đã gặp:")
-                st.write("")
+                st.write(f"### 💡 Khi lá **{search_card}** xuất hiện, thực tế bạn đã gặp:")
                 for _, row in filtered_df.iterrows():
-                    st.markdown(f"💖 {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
+                    st.write(f"💖 {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
             else:
                 st.warning(f"Hình như bạn chưa từng gặp lá **{search_card}** trong quá khứ đâu... Huba?")
         else:
@@ -114,7 +110,7 @@ with tab2:
 
 # ==================== TAB 3: QUẢN LÝ LỊCH SỬ ====================
 with tab3:
-    st.subheader("🧺 Kho lưu trữ trải bài")
+    st.write("### 🧺 Kho lưu trữ trải bài")
     current_df = st.session_state.df
     
     if not current_df.empty:
@@ -123,8 +119,8 @@ with tab3:
                 col_info, col_edit, col_del = st.columns([5, 2, 1])
                 
                 with col_info:
-                    st.markdown(f"📅 **Ngày:** {row['Ngay']} | 🔮 **Bài:** `{row['Danh_Sach_La_Bai']}`")
-                    st.markdown(f"📝 **Giải nghĩa thực tế:** {row['Su_Kien_Thuc_Te']}")
+                    st.write(f"📅 **Ngày:** {row['Ngay']} | 🔮 **Bài:** `{row['Danh_Sach_La_Bai']}`")
+                    st.write(f"📝 **Giải nghĩa thực tế:** {row['Su_Kien_Thuc_Te']}")
                 
                 with col_edit:
                     new_meaning = st.text_input("Sửa giải nghĩa:", value=row['Su_Kien_Thuc_Te'], key=f"edit_{index}")
