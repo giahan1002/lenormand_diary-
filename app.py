@@ -6,7 +6,7 @@ from datetime import datetime
 # 1. Cấu hình trang với giao diện bo tròn và icon thỏ Usagi
 st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
 
-# 2. CHÈN CODE CSS ĐỂ CUSTOM GIAO DIỆN CỰC ĐẸP (Màu vàng nhạt Usagi + Bo tròn dễ thương)
+# 2. CHÈN CODE CSS ĐỂ CUSTOM GIAO DIỆN (Màu vàng nhạt Usagi + Bo tròn dễ thương)
 st.markdown("""
     <style>
     /* Đổi màu nền của toàn bộ trang web sang màu kem pastel nhẹ nhàng */
@@ -80,15 +80,11 @@ if "form_event" not in st.session_state:
     st.session_state.form_event = ""
 
 # ==================== BANNER CHIILAWA & USAGI ====================
-# Bạn có thể thay link ảnh này bằng bất kỳ ảnh Chiikawa nào bạn thích trên mạng nhé
-banner_url = "https://i.postimg.cc/9F7g5Y6t/chiikawa-banner.jpg" 
-# Nếu không có link ảnh sẵn, tôi dùng tạm layout 2 cột chứa hình ảnh dễ thương:
 col_title, col_img = st.columns([3, 1])
 with col_title:
     st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
     st.markdown("*Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!*")
 with col_img:
-    # Chèn một chiếc ảnh Usagi cực cute làm đại diện
     st.image("https://i.pinimg.com/736x/8d/bf/9a/8dbf9a46452baec02cf065ee0962b80f.jpg", width=120)
 
 st.markdown("---")
@@ -154,7 +150,6 @@ with tab2:
                 st.markdown(f"### 💡 Khi lá **{search_card}** xuất hiện, thực tế bạn đã gặp:")
                 st.write("")
                 for _, row in filtered_df.iterrows():
-                    # Mỗi sự kiện bọc trong một emoji dễ thương
                     st.markdown(f"💖 {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
             else:
                 st.warning(f"Hình như bạn chưa từng gặp lá **{search_card}** trong quá khứ đâu... Huba?")
