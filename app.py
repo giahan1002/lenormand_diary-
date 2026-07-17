@@ -45,8 +45,8 @@ if "df" not in st.session_state:
 # Thay đổi tỷ lệ cột sang [2, 1] để cột bên phải rộng rãi hơn cho ảnh bự
 col_title, col_img = st.columns([2, 1])
 with col_title:
-    st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
-    st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!")
+    st.title("🐰 YAHA! Nhật Ký Trải Bài Lenormand")
+    st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày. Urara!!")
 with col_img:
     # Đã tăng kích thước ảnh lên thành 350 (bạn có thể tăng thêm nếu muốn bự nữa nha)
     st.image("https://www.buyandship.today/contents/uploads/2023/09/footer-chiikawa-1024x414.jpeg", width=350)
@@ -72,8 +72,8 @@ with tab1:
         
     with col2:
         actual_event = st.text_area(
-            "Sự kiện thực tế diễn ra (Validation):", 
-            placeholder="Ví dụ: Ngồi cạnh một người phụ nữ sắc sảo ở trường học...",
+            "Sự kiện thực tế diễn ra:", 
+            placeholder="Ví dụ: Có một người lạ hợp gu gửi lời kết bạn hoặc nhắn tin làm quen với bạn (Rider) trên mạng xã hội (Star)....",
             height=150,
             key="form_event"
         )
@@ -119,10 +119,14 @@ with tab2:
                 st.write(f"### 💡 Khi lá **{search_card}** xuất hiện, thực tế bạn đã gặp:")
                 for _, row in filtered_df.iterrows():
                     st.write(f"💖 {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
+                # ---- THÊM DÒNG DÍ DỎM NÀY VÀO ĐÂY NHA HÂN ----
+                st.write("") # Tạo một khoảng trống nhỏ cho đẹp
+                st.success("🐰 **Ura... Nhìn bạn ngon như cà phê Laura của ca sĩ Nhật Kim Anh vậy!** ☕✨")
+                # ---------------------------------------------
             else:
                 st.warning(f"Hình như bạn chưa từng gặp lá **{search_card}** trong quá khứ đâu... Huba?")
         else:
-            st.info("Chưa có dữ liệu nhật ký nào để tra cứu cả.")
+            st.info("Chưa có dữ liệu nào để tra cứu cả.")
 
 # ==================== TAB 3: QUẢN LÝ LỊCH SỬ ====================
 with tab3:
