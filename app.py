@@ -101,7 +101,7 @@ with tab2:
                 st.write(f"💡 Những lần gặp lá **{search_card}**, thực tế đã xảy ra các sự kiện:")
                 # Hiện danh sách sự kiện thuần túy, không hiện ngày
                 for _, row in filtered_df.iterrows():
-                    st.markdown(f"- {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: {row['Danh_Sach_La_Bai']})*")
+                    st.markdown(f"- {row['Su_Kien_Thuc_Te']} *(Trải bài: {row['Danh_Sach_La_Bai']})*")
             else:
                 st.warning(f"Chưa có lịch sử sự kiện nào cho lá **{search_card}**.")
         else:
