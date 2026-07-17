@@ -38,7 +38,7 @@ with col_title:
     st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày... Urara!!")
 with col_img:
     # Đã cập nhật sang ảnh mới của bạn gửi ở đây nha
-    st.image("https://static.wikia.nocookie.net/chiikawa/images/b/b5/Site-background-light/revision/latest/scale-to-width-down/1500?cb=20250326162037", width=150)
+    st.image("https://www.buyandship.today/contents/uploads/2023/09/footer-chiikawa-1024x414.jpeg", width=150)
 
 st.write("---")
 
