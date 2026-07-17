@@ -38,7 +38,7 @@ with col_title:
     st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
     st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!")
 with col_img:
-    st.image("https://i.pinimg.com/736x/8d/bf/9a/8dbf9a46452baec02cf065ee0962b80f.jpg", width=120)
+    st.image("https://static.wikia.nocookie.net/chiikawa/images/b/b5/Site-background-light/revision/latest/scale-to-width-down/1500?cb=20250326162037", width=120)
 
 st.write("---")
 
