@@ -3,7 +3,55 @@ import pandas as pd
 import os
 from datetime import datetime
 
-st.set_page_config(page_title="Lenormand Diary", page_icon="🔮", layout="wide")
+# 1. Cấu hình trang với giao diện bo tròn và icon thỏ Usagi
+st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
+
+# 2. CHÈN CODE CSS ĐỂ CUSTOM GIAO DIỆN CỰC ĐẸP (Màu vàng nhạt Usagi + Bo tròn dễ thương)
+st.markdown("""
+    <style>
+    /* Đổi màu nền của toàn bộ trang web sang màu kem pastel nhẹ nhàng */
+    .stApp {
+        background-color: #FFFDF0;
+    }
+    
+    /* Custom lại các tab cho bo tròn và đổi màu khi click */
+    .stTabs [data-baseweb="tab"] {
+        font-size: 16px;
+        font-weight: bold;
+        color: #6A5D4D;
+        border-radius: 15px 15px 0px 0px;
+        padding: 10px 20px;
+    }
+    .stTabs [aria-selected="true"] {
+        background-color: #FEE49C !important;
+        color: #4A3E3D !important;
+    }
+    
+    /* Làm đẹp các khung Container chứa lịch sử bài */
+    div[data-testid="stContainer"] {
+        background-color: #FFFFFF;
+        border: 2px solid #FEE49C !important;
+        border-radius: 20px !important;
+        padding: 20px !important;
+        box-shadow: 3px 3px 10px rgba(254, 228, 156, 0.3);
+    }
+    
+    /* Custom nút bấm chính (Lưu nhật ký) thành màu vàng Usagi */
+    div.stButton > button:first-child {
+        background-color: #FFD43F;
+        color: #4A3E3D;
+        font-weight: bold;
+        border-radius: 12px;
+        border: 2px solid #E6B813;
+        transition: 0.3s;
+    }
+    div.stButton > button:first-child:hover {
+        background-color: #FEE49C;
+        border-color: #FFD43F;
+        transform: scale(1.03);
+    }
+    </style>
+""", unsafe-allow_html=True)
 
 DB_FILE = "nhat_ky_lenormand.csv"
 
@@ -23,31 +71,39 @@ def load_data():
     else:
         return pd.DataFrame(columns=["Ngay", "Danh_Sach_La_Bai", "Su_Kien_Thuc_Te"])
 
-# Khởi tạo hoặc load database
 if "df" not in st.session_state:
     st.session_state.df = load_data()
 
-# Khởi tạo các biến tạm để Clear Form sau khi lưu
 if "form_cards" not in st.session_state:
     st.session_state.form_cards = []
 if "form_event" not in st.session_state:
     st.session_state.form_event = ""
 
-st.title("🔮 Nhật Ký Trải Bài & Tra Cứu Ứng Nghiệm")
+# ==================== BANNER CHIILAWA & USAGI ====================
+# Bạn có thể thay link ảnh này bằng bất kỳ ảnh Chiikawa nào bạn thích trên mạng nhé
+banner_url = "https://i.postimg.cc/9F7g5Y6t/chiikawa-banner.jpg" 
+# Nếu không có link ảnh sẵn, tôi dùng tạm layout 2 cột chứa hình ảnh dễ thương:
+col_title, col_img = st.columns([3, 1])
+with col_title:
+    st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
+    st.markdown("*Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!*")
+with col_img:
+    # Chèn một chiếc ảnh Usagi cực cute làm đại diện
+    st.image("https://i.pinimg.com/736x/8d/bf/9a/8dbf9a46452baec02cf065ee0962b80f.jpg", width=120)
+
 st.markdown("---")
 
-tab1, tab2, tab3 = st.tabs(["✍️ Ghi Chép Hôm Nay", "📚 Tra Cứu Sự Kiện", "⚙️ Quản Lý Lịch Sử (Sửa/Xóa)"])
+tab1, tab2, tab3 = st.tabs(["⭐ Ghi Chép Hôm Nay", "🔍 Tra Cứu Sự Kiện", "🧺 Quản Lý Lịch Sử"])
 
-# ==================== TAB 1: NHẬP LIỆU HÀNG NGÀY (CÓ TỰ CLEAR) ====================
+# ==================== TAB 1: NHẬP LIỆU HÀNG NGÀY ====================
 with tab1:
-    st.subheader("Ghi lại trải bài hôm nay")
+    st.subheader("📝 Hôm nay bộ bài nói gì với bạn thế?")
     col1, col2 = st.columns([1, 2])
     
     with col1:
         date_input = st.date_input("Chọn Ngày:", datetime.now())
         date_str = date_input.strftime("%d/%m/%Y")
         
-        # Sử dụng key để có thể xóa dữ liệu sau khi bấm lưu
         selected_cards = st.multiselect(
             "Chọn các lá bài đã rút:", 
             options=LENORMAND_CARDS,
@@ -62,11 +118,11 @@ with tab1:
             key="form_event"
         )
         
-        if st.button("💾 Lưu Nhật Ký", type="primary"):
+        if st.button("✨ Lưu Nhật Ký (Yaha!)", type="primary"):
             if not selected_cards:
-                st.error("Vui lòng chọn ít nhất một lá bài!")
+                st.error("Ơ kìa, chưa chọn lá bài nào hết trơn! 😲")
             elif not actual_event.strip():
-                st.error("Vui lòng nhập sự kiện thực tế!")
+                st.error("Hãy nhập sự kiện thực tế để Usagi lưu lại giúp bạn nhé! 📝")
             else:
                 cards_str = ", ".join(selected_cards)
                 new_row = pd.DataFrame([{
@@ -75,47 +131,44 @@ with tab1:
                     "Su_Kien_Thuc_Te": actual_event.strip()
                 }])
                 
-                # Cập nhật vào dữ liệu hiện tại
                 st.session_state.df = pd.concat([st.session_state.df, new_row], ignore_index=True)
                 st.session_state.df.to_csv(DB_FILE, index=False)
                 
-                st.success(f"🎉 Đã lưu thành công dữ liệu!")
+                st.success(f"🎉 Xuất sắc!! Đã lưu xong rồi! Ura-ra-ra-ra! 🐰⭐")
                 
-                # Tiến hành XÓA SẠCH FORM để tránh hiểu lầm chưa lưu
                 st.session_state.form_cards = []
                 st.session_state.form_event = ""
                 st.rerun()
 
-# ==================== TAB 2: TRA CỨU SỰ KIỆN THỰC TẾ (ẨN NGÀY) ====================
+# ==================== TAB 2: TRA CỨU SỰ KIỆN THỰC TẾ ====================
 with tab2:
-    st.subheader("Tra cứu nghĩa thực tế theo lá bài")
-    search_card = st.selectbox("Chọn lá bài muốn tra cứu:", options=["-- Chọn lá bài --"] + LENORMAND_CARDS)
+    st.subheader("🔎 Tìm kiếm ký ức của những lá bài")
+    search_card = st.selectbox("Chọn lá bài muốn tra cứu ngược:", options=["-- Chọn lá bài --"] + LENORMAND_CARDS)
     
     if search_card != "-- Chọn lá bài --":
         current_df = st.session_state.df
         if not current_df.empty:
-            # Lọc các dòng chứa lá bài chọn
             filtered_df = current_df[current_df["Danh_Sach_La_Bai"].apply(lambda x: search_card in [c.strip() for c in str(x).split(",")])]
             
             if not filtered_df.empty:
-                st.write(f"💡 Những lần gặp lá **{search_card}**, thực tế đã xảy ra các sự kiện:")
-                # Hiện danh sách sự kiện thuần túy, không hiện ngày
+                st.markdown(f"### 💡 Khi lá **{search_card}** xuất hiện, thực tế bạn đã gặp:")
+                st.write("")
                 for _, row in filtered_df.iterrows():
-                    st.markdown(f"- {row['Su_Kien_Thuc_Te']} *(Trải bài: {row['Danh_Sach_La_Bai']})*")
+                    # Mỗi sự kiện bọc trong một emoji dễ thương
+                    st.markdown(f"💖 {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
             else:
-                st.warning(f"Chưa có lịch sử sự kiện nào cho lá **{search_card}**.")
+                st.warning(f"Hình như bạn chưa từng gặp lá **{search_card}** trong quá khứ đâu... Huba?")
         else:
-            st.info("Chưa có dữ liệu nhật ký.")
+            st.info("Chưa có dữ liệu nhật ký nào để tra cứu cả.")
 
-# ==================== TAB 3: QUẢN LÝ LỊCH SỬ (EDIT / DELETE) ====================
+# ==================== TAB 3: QUẢN LÝ LỊCH SỬ ====================
 with tab3:
-    st.subheader("Danh sách trải bài đã lưu")
+    st.subheader("🧺 Kho lưu trữ trải bài")
     current_df = st.session_state.df
     
     if not current_df.empty:
         for index, row in current_df.iterrows():
-            # Tạo một khung bao quanh mỗi dòng trải bài
-            with st.container(border=True):
+            with st.container():
                 col_info, col_edit, col_del = st.columns([5, 2, 1])
                 
                 with col_info:
@@ -123,22 +176,20 @@ with tab3:
                     st.markdown(f"📝 **Giải nghĩa thực tế:** {row['Su_Kien_Thuc_Te']}")
                 
                 with col_edit:
-                    # Ô nhập văn bản mới để sửa trực tiếp lời giải thích
                     new_meaning = st.text_input("Sửa giải nghĩa:", value=row['Su_Kien_Thuc_Te'], key=f"edit_{index}")
                     if new_meaning != row['Su_Kien_Thuc_Te']:
                         if st.button("📝 Cập nhật", key=f"btn_edit_{index}"):
                             st.session_state.df.at[index, "Su_Kien_Thuc_Te"] = new_meaning
                             st.session_state.df.to_csv(DB_FILE, index=False)
-                            st.success("Đã cập nhật!")
+                            st.success("Đã sửa thành công!")
                             st.rerun()
                             
                 with col_del:
-                    # Nút xóa dòng trải bài này
-                    st.write("") # Tạo khoảng cách cho bằng hàng với ô text
-                    if st.button("🗑️ Xóa", key=f"btn_del_{index}", type="secondary"):
+                    st.write("") 
+                    if st.button("🗑️ Xóa", key=f"btn_del_{index}"):
                         st.session_state.df = st.session_state.df.drop(index).reset_index(drop=True)
                         st.session_state.df.to_csv(DB_FILE, index=False)
-                        st.success("Đã xóa dòng này!")
+                        st.success("Đã xóa sạch!")
                         st.rerun()
     else:
-        st.info("Chưa có lịch sử trải bài nào được lưu.")
+        st.info("Kho trống rỗng~ Hãy đi rút bài thôi nào! 🃏")
