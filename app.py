@@ -117,10 +117,25 @@ with tab2:
             
             if not filtered_df.empty:
                 st.write(f"### 💡 Khi lá **{search_card}** xuất hiện, thực tế bạn đã gặp:")
-                for _, row in filtered_df.iterrows():
-                    st.write(f"* {row['Su_Kien_Thuc_Te']} *(Đi kèm bộ bài: `{row['Danh_Sach_La_Bai']}`)*")
-                # ---- THÊM DÒNG DÍ DỎM NÀY VÀO ĐÂY NHA HÂN ----
-                st.write("") # Tạo một khoảng trống nhỏ cho đẹp
+                
+                # 1. Tạo một DataFrame mới tinh giản chỉ lấy 2 cột bạn cần và đổi tên cột cho đẹp
+                display_df = filtered_df[["Su_Kien_Thuc_Te", "Danh_Sach_La_Bai"]].copy()
+                display_df.columns = ["🎯 Sự Kiện Thực Tế", "🔮 Các Lá Trong Trải Bài"]
+                
+                # 2. Hiển thị bảng dạng Minimalist, tự động giãn tràn màn hình và bo góc đẹp mắt
+                st.data_editor(
+                    display_df,
+                    hide_index=True,  # Ẩn cột số thứ tự (0, 1, 2...) cho bảng tối giản hoàn toàn
+                    use_container_width=True, # Bảng tự động giãn vừa khít độ rộng màn hình
+                    disabled=True, # Chỉ hiển thị để xem, không cho chỉnh sửa trực tiếp trên bảng này
+                    column_config={
+                        "Sự Kiện": st.column_config.TextColumn(width="large"),
+                        "Trải Bài": st.column_config.TextColumn(width="medium")
+                    }
+                )
+                
+                # 3. Ô chữ dí dỏm "cà phê Laura" ngay bên dưới bảng
+                st.write("") 
                 st.success("🐰 **Ura... Nhìn bạn ngon như cà phê Laura của ca sĩ Nhật Kim Anh vậy!** ☕✨")
                 # ---------------------------------------------
             else:
