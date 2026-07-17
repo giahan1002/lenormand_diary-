@@ -7,7 +7,17 @@ from datetime import datetime
 st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
 
 # Đổi màu nền sang màu kem sữa pastel nhẹ nhàng
-st.markdown("<style>.stApp {background-color: #FFFDF0;}</style>", unsafe_allow_html=True)
+# Thay đổi đoạn này để tạo nền hiệu ứng Gradient Xanh và Hồng pastel
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: linear-gradient(135deg, #E3F2FD 0%, #FCE4EC 100%);
+    }
+    </style>
+    """, 
+    unsafe_allow_html=True
+)
 
 DB_FILE = "nhat_ky_lenormand.csv"
 
@@ -32,13 +42,14 @@ if "df" not in st.session_state:
     st.session_state.df = load_data()
 
 # ==================== BANNER CHIILAWA & USAGI ====================
-col_title, col_img = st.columns([3, 1])
+# Thay đổi tỷ lệ cột sang [2, 1] để cột bên phải rộng rãi hơn cho ảnh bự
+col_title, col_img = st.columns([2, 1])
 with col_title:
-    st.title("🐰 YAHA! Nhật Ký Trải Bài")
-    st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày... Urara!!")
+    st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
+    st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!")
 with col_img:
-    # Đã cập nhật sang ảnh mới của bạn gửi ở đây nha
-    st.image("https://www.buyandship.today/contents/uploads/2023/09/footer-chiikawa-1024x414.jpeg", width=150)
+    # Đã tăng kích thước ảnh lên thành 350 (bạn có thể tăng thêm nếu muốn bự nữa nha)
+    st.image("https://www.buyandship.today/contents/uploads/2023/09/footer-chiikawa-1024x414.jpeg", width=350)
 
 st.write("---")
 
