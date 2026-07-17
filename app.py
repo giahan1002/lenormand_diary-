@@ -6,52 +6,8 @@ from datetime import datetime
 # 1. Cấu hình trang với giao diện bo tròn và icon thỏ Usagi
 st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
 
-# 2. CHÈN CODE CSS ĐỂ CUSTOM GIAO DIỆN (Màu vàng nhạt Usagi + Bo tròn dễ thương)
-st.markdown("""
-    <style>
-    /* Đổi màu nền của toàn bộ trang web sang màu kem pastel nhẹ nhàng */
-    .stApp {
-        background-color: #FFFDF0;
-    }
-    
-    /* Custom lại các tab cho bo tròn và đổi màu khi click */
-    .stTabs [data-baseweb="tab"] {
-        font-size: 16px;
-        font-weight: bold;
-        color: #6A5D4D;
-        border-radius: 15px 15px 0px 0px;
-        padding: 10px 20px;
-    }
-    .stTabs [aria-selected="true"] {
-        background-color: #FEE49C !important;
-        color: #4A3E3D !important;
-    }
-    
-    /* Làm đẹp các khung Container chứa lịch sử bài */
-    div[data-testid="stContainer"] {
-        background-color: #FFFFFF;
-        border: 2px solid #FEE49C !important;
-        border-radius: 20px !important;
-        padding: 20px !important;
-        box-shadow: 3px 3px 10px rgba(254, 228, 156, 0.3);
-    }
-    
-    /* Custom nút bấm chính (Lưu nhật ký) thành màu vàng Usagi */
-    div.stButton > button:first-child {
-        background-color: #FFD43F;
-        color: #4A3E3D;
-        font-weight: bold;
-        border-radius: 12px;
-        border: 2px solid #E6B813;
-        transition: 0.3s;
-    }
-    div.stButton > button:first-child:hover {
-        background-color: #FEE49C;
-        border-color: #FFD43F;
-        transform: scale(1.03);
-    }
-    </style>
-""", unsafe-allow_html=True)
+# 2. Đổi màu nền trang web sang màu kem pastel nhẹ nhàng của Usagi
+st.markdown("<style>.stApp {background-color: #FFFDF0;}</style>", unsafe-allow_html=True)
 
 DB_FILE = "nhat_ky_lenormand.csv"
 
