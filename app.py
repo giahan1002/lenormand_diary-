@@ -6,8 +6,8 @@ from datetime import datetime
 # Cấu hình trang cơ bản
 st.set_page_config(page_title="Chiikawa Lenormand Diary", page_icon="🐰", layout="wide")
 
-# Mẹo đổi màu nền đơn giản, an toàn
-st.markdown("<style>.stApp {background-color: #FFFDF0;}</style>", unsafe-allow_html=True)
+# Đã sửa thành dấu gạch dưới (_) chuẩn chỉnh ở đây:
+st.markdown("<style>.stApp {background-color: #FFFDF0;}</style>", unsafe_allow_html=True)
 
 DB_FILE = "nhat_ky_lenormand.csv"
 
@@ -34,9 +34,11 @@ if "df" not in st.session_state:
 # ==================== BANNER CHIILAWA & USAGI ====================
 col_title, col_img = st.columns([3, 1])
 with col_title:
-    st.title("🐰 YAHA! Nhật Ký Trải Bài")
+    st.title("🐰 YAHA! Nhật Ký Trải Bài Của Hân")
     st.write("Một không gian nhỏ để lưu giữ những phép màu và sự kiện thực tế mỗi ngày cùng Chiikawa & Usagi... Urara!!")
-    
+with col_img:
+    st.image("https://i.pinimg.com/736x/8d/bf/9a/8dbf9a46452baec02cf065ee0962b80f.jpg", width=120)
+
 st.write("---")
 
 tab1, tab2, tab3 = st.tabs(["⭐ Ghi Chép Hôm Nay", "🔍 Tra Cứu Sự Kiện", "🧺 Quản Lý Lịch Sử"])
@@ -84,7 +86,7 @@ with tab1:
                 # Thông báo thành công trước khi dọn dẹp form
                 st.toast("🎉 Đã lưu xong rồi! Ura-ra-ra-ra! 🐰⭐")
                 
-                # Cách xóa sạch ô nhập liệu an toàn, không gây lỗi dòng 88
+                # Cách xóa sạch ô nhập liệu an toàn
                 for k in ["form_cards", "form_event"]:
                     if k in st.session_state:
                         del st.session_state[k]
